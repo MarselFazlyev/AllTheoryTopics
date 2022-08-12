@@ -27,8 +27,8 @@ public class StreamAPI {
               .filter(x->x.isFrom("London")).collect(Collectors.toList());
         System.out.println(artistsFromLondon);*/
 
-        //Пример заполнения массива с помощью Stream
-     /*   int[ ] ints;
+        // рандомное заполнение массива с помощью Stream
+   /*     int[ ] ints;
         Integer[ ] integers;
 
         ints = new Random(1).ints(10, 1,5)
@@ -36,15 +36,11 @@ public class StreamAPI {
         System.out.println(Arrays.toString(ints));
 
         integers = new Random(1).ints(1000000, 0, 1000)
-                .boxed().toArray(Integer[]::new);*/
-
-        int[] s = new Random(1).ints(10,20,26).toArray();
-        System.out.println(Arrays.toString(s));
-        System.out.println(Arrays.toString(IntStream.rangeClosed(45,50).map(c->c*1).toArray()));
-        // TODO: 06.08.2022 дочитать   Stream документацию до конца (во вкладке в данном проекте, продолжить работу с лямбдами.
+                .boxed().toArray(Integer[]::new);
        int[] a =  IntStream.generate(()-> new Random().nextInt()).limit(10).toArray();
-        System.out.println(Arrays.toString(a));
+        System.out.println(Arrays.toString(a));*/
 
+        // TODO: 13.08.2022 дочитать   Stream документацию до конца (во вкладке в данном проекте, продолжить работу с лямбдами.
 
     }
 
