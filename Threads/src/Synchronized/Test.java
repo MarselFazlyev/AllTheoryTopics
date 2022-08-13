@@ -8,6 +8,10 @@ public class Test {
 
     }
 
+    public synchronized void inkrement(){ //
+        counter++;
+    }
+
     public void doWork() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -30,7 +34,7 @@ public class Test {
         thread2.start();
 
         try {
-            thread.join();
+            thread.join();// поток main ждет окончвния работы потока thread
             thread2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
