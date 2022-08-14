@@ -4,13 +4,21 @@ public class Test {
     private int counter;
     public static void main(String[] args) {
          Test test = new Test();
-        test.doWork();
+         test.doWork();
 
     }
 
-    public synchronized void inkrement(){ //
+    public synchronized void inkrement(){ // данный метод может выполняться а один момент времени только одним потоком
         counter++;
     }
+
+    // пример synchronized block
+ /*   public void inkrement() {
+        synchronized (this) {
+            counter++;
+        }
+    } */
+
 
     public void doWork() {
         Thread thread = new Thread(new Runnable() {
