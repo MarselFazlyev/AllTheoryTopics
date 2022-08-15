@@ -14,14 +14,14 @@ public class Example {
 class Worker {
     Random random = new Random();
 
-    final Object lock1 = new Object();
+    final Object lock1 = new Object();// объекты для захвата их монитора потоками thread1 и thread2
     final Object lock2 = new Object();
 
     private List<Integer> list1 = new ArrayList<>();
     private List<Integer> list2 = new ArrayList<>();
 
     public void addToList1() {
-        synchronized (lock1) {
+        synchronized (lock1) { // synchronized block
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
