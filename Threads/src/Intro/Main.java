@@ -1,11 +1,11 @@
 package Intro;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+
         //Создание потока через потомка класса Thread
         MyThread thread1 = new MyThread();
         // вызов потока (вызов метода start(), создает новый поток и запускает в нем переопределенный метод run
