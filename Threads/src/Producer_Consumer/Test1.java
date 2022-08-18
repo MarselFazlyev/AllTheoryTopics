@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Test1 {
     public static void main(String[] args) {
-        WaitAndNotify wn = new WaitAndNotify();
+        ProducerConsumer wn = new ProducerConsumer();
 
         Thread thread1 = new Thread(new Runnable() {
             @Override
@@ -54,7 +54,7 @@ class WaitAndNotify {
         synchronized (this){
             System.out.println("Waiting for return key pressed...");
             scanner.nextLine();
-            notify(); // пробуждает поток, который вызывал метод wait(), к дальнейшему выполнению , отдает ему монитор
+            notify(); // пробуждает поток, который вызывал метод wait(), к дальнейшему выполнению, отдает ему монитор
         }
     }
 
