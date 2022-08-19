@@ -1,76 +1,79 @@
 package Semaphore;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.TimeUnit;
 
 public class Test {
-
     public static void main(String[] args) throws InterruptedException {
-        Semaphore semaphore = new Semaphore(3);
-        Work work = new Work(semaphore);
-        Thread thread1 = new Thread(work);
-        Thread thread2 = new Thread(work);
-        Thread thread3 = new Thread(work);
-        Thread thread4 = new Thread(work);
-        Thread thread5 = new Thread(work);
-
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
-        thread5.start();
-
-        thread1.join();
-        thread2.join();
-        thread3.join();
-        thread4.join();
-        thread5.join();
-
-        System.out.println(work.getList().size());
-
-
+        // вызов пула потоков, равного 200 потокам
+        ExecutorService executorService = Executors.newFixedThreadPool(200);
+        // вызов синглтона СOnnection
+        Connection connection = Connection.getConnection();
+        for (int i = 0; i < 200; i++) {
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        connection.work();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.DAYS);
     }
 }
 
-class Work implements Runnable {
-    private static List<Integer> list = new ArrayList<>();
-    private Semaphore semaphore;
-    private Lock lock = new ReentrantLock();
 
+// Singleton
+class Connection {
+    private static Connection connection = new Connection();
+    private int connectionCount;
+    // лимит одновременных соединений с ресурсом выставляем, например 10
+    private Semaphore semaphore = new Semaphore(10);
 
-    public Work(Semaphore semaphore) {
-        this.semaphore = semaphore;
+    // конструктор для синглтона
+    private Connection() {
+
     }
 
-    public List<Integer> getList() {
-        return list;
+
+    public static Connection getConnection() {
+        return connection;
     }
 
-    private void fillList() {
-        Random random = new Random();
-        lock.lock();
-        for (int i = 0; i < 1000; i++) {
-            list.add(random.nextInt(10));
-        }
-        lock.unlock();
-    }
-
-    @Override
-    public void run() {
+    // данный метод  демонстрирует ограничение только для 10 потоков выполнения метода work()
+    public void work() throws InterruptedException {
+        //как только 11 по счету поток придет, семафор будет равным нулю, и поток будет в ожидании исполнения метода и
+        //вызова на этом же семафоре метода release()
+        semaphore.acquire();
         try {
-            Random random = new Random();
-            semaphore.acquire();
-            System.out.println(semaphore.availablePermits());
-            fillList();
-            Thread.sleep(1000);
+            doWork();
+        } finally {
+            // гарантированное освобождение ресурса для выполнения следующим потоком, даже если в методе do work вылетит
+            // исключение
             semaphore.release();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
+
     }
+
+    // имитация выполнения рандомной работы сервера
+    private void doWork() throws InterruptedException {
+        synchronized (this) {
+            connectionCount++;
+            System.out.println(connectionCount);
+        }
+        Thread.sleep(5000);
+
+        synchronized (this) {
+            connectionCount--;
+        }
+    }
+
+
 }
