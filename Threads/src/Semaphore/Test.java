@@ -64,7 +64,6 @@ class Work implements Runnable {
         try {
             Random random = new Random();
             semaphore.acquire();
-            Thread.sleep(2000);
             System.out.println(semaphore.availablePermits());
             fillList();
             Thread.sleep(1000);
