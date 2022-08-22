@@ -1,10 +1,11 @@
-package Deadlock;
+package Deadlock.DeadlockWithSynchronized;
 
 import java.util.Random;
 
 public class Test {
-    // В данном примере показано состояние (RaceCondition) гонки потоков (не синхронизированный доступ к методам,переменным)
-    // в двух других пакетах решения по устранению проблемы
+    // Описание примера с Synchronized захватом двух мониторов
+    // работает лишь, если захватываются мониторы объектов в одном и том же порядке, в противном случае возникнет
+    // deadlock
     public static void main(String[] args) throws InterruptedException {
         Runner runner = new Runner();
 
@@ -39,16 +40,26 @@ class Runner {
     public void firstThread() {
         Random random = new Random();
         for (int i = 0; i < 10000; i++) {
-            Account.transfer(account1, account2, random.nextInt(100));
+            //захват двух мониторов с помощью synchronized
+            synchronized (account1) {
+                synchronized (account2) {
+                    Account.transfer(account1, account2, random.nextInt(100));
+                }
+            }
         }
-
-
     }
 
     public void secondThread() {
         Random random = new Random();
         for (int i = 0; i < 10000; i++) {
-            Account.transfer(account1, account2, random.nextInt(100));
+            // если сделать порядок захвата в потоках разным то возникнет deadLock (поток, выполняющий метод thread1,
+            // захватит монитор account 21, и зависнет в ожидании монитора account22, так как он будет захвачен потоком,
+            // выполняющим метод secondThread, аналогично и другой поток так же зависнет в ожидании монитора account21)
+            synchronized (account1) {
+                synchronized (account2) {
+                    Account.transfer(account2, account1, random.nextInt(100));
+                }
+            }
         }
     }
 
