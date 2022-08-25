@@ -21,7 +21,7 @@ public class Test {
 
                 Random random = new Random();
                 int randomValue = random.nextInt();
-                if(randomValue<5)
+                if (randomValue < 5)
                     throw new Exception("Something bad happened");
 
                 return random.nextInt(10);
@@ -32,6 +32,7 @@ public class Test {
         try {
             // get дожидается окончания выполнения потока , как join
             int result = future.get();
+            System.out.println(result);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
