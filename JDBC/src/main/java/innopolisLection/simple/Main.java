@@ -27,6 +27,8 @@ public class Main {
                     "|" + resultSet.getString("color") +
                     "|" + resultSet.getInt("driver_id"));
         }
+        connection.close();
+        statement.close();
     }
 
 

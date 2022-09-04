@@ -66,5 +66,9 @@ public class Main {
                     resultSet.getInt("driver_id")));
         }
         System.out.println(cars);
+
+        connection.close();
+        preparedStatement.close();
     }
+
 }
