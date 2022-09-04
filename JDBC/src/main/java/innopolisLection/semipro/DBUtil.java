@@ -8,8 +8,8 @@ import java.util.Properties;
 public class DBUtil {
     private static Connection connection;
 
-    private final String BY_ID = "SELECT * FROM car where id = ?";
-    private final String ALL_ELEMENTS = "SELECT * FROM car ";
+    private final String BY_ID = "SELECT * FROM ? where id = ?";
+    private final String ALL_ELEMENTS = "SELECT * FROM ? ";
 
     public DBUtil() throws SQLException {
         connection = createConnection();
@@ -38,15 +38,17 @@ public class DBUtil {
 
     }
 
-    public ResultSet getById(int id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(BY_ID);
-        // в статическом поле  BY_ID в запросе стоит знак ?, поэтому ставим индекс 1, так как только один параметр
-        preparedStatement.setInt(1,id);
+    public ResultSet getById(Class clazz, int id) throws SQLException {
+        String temp = BY_ID.replaceFirst("\\?", clazz.getSimpleName().toLowerCase())
+                .replaceFirst("\\?", String.valueOf(id));
+        PreparedStatement preparedStatement = connection.prepareStatement(temp);
         return preparedStatement.executeQuery();
     }
 
-    public ResultSet getAllElements() throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(ALL_ELEMENTS);
+    public ResultSet getAllElements(Class clazz) throws SQLException {
+        String temp = ALL_ELEMENTS.replaceFirst("\\?", clazz.getSimpleName().toLowerCase());
+        PreparedStatement preparedStatement = connection.prepareStatement(temp);
+
         return preparedStatement.executeQuery();
     }
 }
