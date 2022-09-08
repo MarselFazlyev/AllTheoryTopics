@@ -31,6 +31,25 @@
 для своей работы низкоуровневый JDBC.
 2) Нужно создать конфигурационный файл **hibernate.properties** (называться должен именно так!!!)-> поместить его в папку resources в структуре maven.
 
+В файле **hibernate.properties** необхоимо прописать 2 вещи :
+- конфигурацию источника данных (конфигурацию JDBC драйвера)
+# Конфигурация источника данных (DataSource)
+hibernate.driver_class=org.postgresql.Driver ( JDBC драйвер)
+hibernate.connection.url= jdbc:postgreSQL://localhost:5432/hibernate_demo_db (url базы данных)
+hibernate.connection.username = postgres
+hibernate.connection.password = postgres
+
+- конфигурацию самого HIbernate
+hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect (тип СУБД)
+hibernate.show_sql = true (позволяет видеть в консоли , какой запрос SQL сгенерировал Hibernate в базу данных )
+hibernate.current_session_context_classes=thread
+
+//расписать все пройденные аннотации и двигать дальше по Hibernate!!!
+
+
+
+
+
 
 
 
