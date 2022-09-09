@@ -32,6 +32,7 @@ public class DBUtil {
                     properties.getProperty("db.password")
             );
 
+
             return connection;
         }
         return connection;
