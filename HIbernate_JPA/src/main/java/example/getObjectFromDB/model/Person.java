@@ -1,10 +1,7 @@
-package example.model;
+package example.getObjectFromDB.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Person")
@@ -12,6 +9,7 @@ public class Person {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name ")
     private String name;
@@ -49,5 +47,14 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id " + id + "\n" +
+                        "name " + name + "\n" +
+                        ", age=" + age + "\n"
+                ;
     }
 }
